@@ -127,9 +127,7 @@ function addCameraViewListeners() {
 
 function addRandomColorListeners() {
     randomColor.addEventListener("click", async _event => {
-
     const randomColor = Math.floor(Math.random()*16777215).toString(16);
-
     const colorChangeResult = await vctrApi.updateMaterial("Mug", { color: "#" + randomColor });
     console.log("Color change success:", colorChangeResult);
     });
