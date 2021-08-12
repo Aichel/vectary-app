@@ -2,66 +2,54 @@ import { VctrApi } from "https://www.vectary.com/viewer-api/v1/api.js";
 
 let vctrApi;
 
-const defaultView = document.getElementById("defaultView");
+let defaultView = document.getElementById("defaultView");
 
-const switchingInProgress = false;
+let switchingInProgress = false;
 
-const lip = document.getElementById("lip");
-const fluid = document.getElementById("fluid");
-const handle = document.getElementById("handle");
-const thermal = document.getElementById("thermal");
-const expand = document.getElementById("expand");
+let lip = document.getElementById("lip");
+let fluid = document.getElementById("fluid");
+let handle = document.getElementById("handle");
+let thermal = document.getElementById("thermal");
+let expand = document.getElementById("expand");
 
-const randomColor = document.getElementById("randomColor");
+let blackBtn = document.getElementById("blackBtn");
+let blueBtn = document.getElementById("blueBtn");
+let yellowBtn = document.getElementById("yellowBtn");
 
-const blackBtn = document.getElementById("blackBtn");
-const blueBtn = document.getElementById("blueBtn");
-const yellowBtn = document.getElementById("yellowBtn");
+let randomColor = document.getElementById("randomColor");
 
-// const rootDocument = !!document.getElementsByTagName("iframe").length ?
-//     document.getElementsByTagName("iframe")[0].contentWindow.document :
-//     document;
-
-//     console.log(rootDocument);
-
-const iframe = document.getElementById("f0945394-b36f-4ba9-b56e-f35079e48614");
-
-const iFrame = document.getElementById('f0945394-b36f-4ba9-b56e-f35079e48614').contentWindow.document.body.innerHTML;
-console.log(iFrame);
-
-const annotationSwitch = true;
-const highlightState = false;
+let annotationSwitch = true;
+let highlightState = false;
 
 const annotations = [
     {
         label: "1",
         name: "Lip",
-        text: "Lorem Ipsum",
+        text: "Simply dummy text of the printing and typesetting industry",
         objectName: "Lip"
     },
     {
         label: "2",
         name: "Fluid Dynamics",
-        text: "Lorem Ipsum",
+        text: "The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters",
         objectName: "Fluid-Dynamics"
     },
     {
         label: "3",
         name: "Handle",
-        text: "Lorem Ipsum",
+        text: "Contrary to popular belief, Lorem Ipsum is not simply random text.",
         objectName: "Handle"
     },
     {
         label: "4",
         name: "Thermal",
-        text: "Lorem Ipsum",
+        text: "There are many variations of passages of Lorem Ipsum available",
         objectName: "Thermal"
     },
 ];
 
 let annotationsIds = [];
 
-//Annotations
 function addAnotations() {
     annotations.forEach(async annotation => {
         const currentAnnotation = await vctrApi.addAnnotation(annotation);
@@ -138,30 +126,31 @@ function addCameraViewListeners() {
 }
 
 function addRandomColorListeners() {
-    // rootDocument.addEventListener("click", async _event => {
-    //     const objectsHit = await vctrApi.getHitObjects();
-    //     console.log(objectsHit);
-    //     if (objectsHit.length) {
-    //         console.log(objectsHit);
-    //         // selectByName(meshSelector, objectsHit[0].name);
-    //         // selectByName(materialSelector, objectsHit[0].material);
-    //     }
-    // });
-
     randomColor.addEventListener("click", async _event => {
-        const iframeWindow = iframe.contentWindow;
-        console.log(iframeWindow);
-        // console.log(`Applying ${materialSelector.value} material onto ${meshSelector.value}`);
-        // const changeMaterialSuccess = await vctrApi.setMaterial(meshSelector.value, materialSelector.value);
-        // console.log(`Material change success: ${changeMaterialSuccess}`);
 
-        // if (colorSelector.value !== "no-change") {
-        //     const colorChangeResult = await vctrApi.updateMaterial(materialSelector.value, { color: colorSelector.value });
+    const randomColor = Math.floor(Math.random()*16777215).toString(16);
 
-        //     console.log("Color change success:", colorChangeResult);
-        // }
+    const colorChangeResult = await vctrApi.updateMaterial("Mug", { color: "#" + randomColor });
+    console.log("Color change success:", colorChangeResult);
     });
-}
+}   
+
+function addColorListeners() {
+    blackBtn.addEventListener("click", async _event => {
+        const colorChangeResult = await vctrApi.updateMaterial("Mug", { color: "#252324" });
+        console.log("Color change success:", colorChangeResult);
+    });
+
+    blueBtn.addEventListener("click", async _event => {
+        const colorChangeResult = await vctrApi.updateMaterial("Mug", { color: "#0D5BE1" });
+        console.log("Color change success:", colorChangeResult);
+    });
+
+    yellowBtn.addEventListener("click", async _event => {
+        const colorChangeResult = await vctrApi.updateMaterial("Mug", { color: "#FAE481" });
+        console.log("Color change success:", colorChangeResult);
+    });
+}   
 
 async function run() {
     console.log("Example script running..");
@@ -186,6 +175,7 @@ async function run() {
     addAnnotationListeners();
     addCameraViewListeners();
     addRandomColorListeners();
+    addColorListeners();
     onReady();
 }
 
